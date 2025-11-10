@@ -1,6 +1,6 @@
 const std = @import("std");
 const rl = @import("raylib");
-const setup = @import("./setup.zig");
+const constants = @import("./constants.zig");
 
 pub const AnimationType = enum { Repeating, OneShot };
 
@@ -17,7 +17,7 @@ pub const Animation = struct {
 
     animation_type: AnimationType,
 
-    const tile_size = setup.TILE_SIZE;
+    const tile_size = constants.TILE_SIZE;
 
     pub fn animation_update(self: *Animation) void {
         const dt: f32 = rl.getFrameTime();

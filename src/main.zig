@@ -1,7 +1,7 @@
 const std = @import("std");
 const rl = @import("raylib");
 
-const setup = @import("./setup.zig");
+const constants = @import("./constants.zig");
 const player = @import("./player.zig");
 const animation = @import("./animation.zig");
 
@@ -11,7 +11,7 @@ pub const GRAVITY: f32 = 600.0;
 pub const JUMP_FORCE: f32 = -300.0;
 
 pub fn main() !void {
-    rl.initWindow(setup.WINDOW_WIDTH, setup.WINDOW_HEIGHT, "raylib zig example");
+    rl.initWindow(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT, "raylib zig example");
     defer rl.closeWindow();
 
     const player_idle_texture = try rl.loadTexture("assets/Dude_Monster_Idle_4.png");
@@ -59,11 +59,11 @@ pub fn main() !void {
             p.position.y += velocity_y * rl.getFrameTime();
         }
 
-        if (p.position.y > setup.FLOOR - (setup.TILE_SIZE * 2)) {
+        if (p.position.y > constants.FLOOR - (constants.TILE_SIZE * 2)) {
             jump_number = 0;
             isGrounded = true;
             velocity_y = 0.0;
-            p.position.y = setup.FLOOR - (setup.TILE_SIZE * 2);
+            p.position.y = constants.FLOOR - (constants.TILE_SIZE * 2);
         }
 
         idle_animation.animation_update();
@@ -80,21 +80,6 @@ pub fn main() !void {
             .x = 10,
             .y = 10,
         }, 0.0, .white);
-        // rl.drawTexturePro(player_idle_texture, .{
-        //     .x = 0,
-        //     .y = 0,
-        //     .width = @as(f32, @floatFromInt(player_idle_texture.width)),
-        //     .height = @as(f32, @floatFromInt(player_idle_texture.height)),
-        // }, .{
-        //     .x = 10,
-        //     .y = 10,
-        //     .width = 100,
-        //     .height = 100,
-        // }, .{
-        //     .x = 10,
-        //     .y = 10,
-        // }, 0.0, .white);
-        // rl.drawRectangle(@intFromFloat(p.position.x), @intFromFloat(p.position.y), setup.PLAYER_WIDTH, setup.PLAYER_HEIGHT, rl.Color.black);
     }
 }
 

@@ -1,14 +1,14 @@
 const std = @import("std");
 const rl = @import("raylib");
 
-const setup = @import("./setup.zig");
+const constants = @import("./constants.zig");
 
 pub const Player = struct {
     position: rl.Vector2,
     jumps: usize = undefined,
 
     pub fn default() Player {
-        return .{ .position = setup.PLAYER_START_POSITION, .jumps = setup.JUMPS };
+        return .{ .position = constants.PLAYER_START_POSITION, .jumps = constants.JUMPS };
     }
 
     pub fn init(position: rl.Vector2, jumps: usize) Player {
@@ -22,9 +22,9 @@ pub const Player = struct {
 
 test "player defaults" {
     const player: Player = Player.default();
-    try std.testing.expectEqual(setup.JUMPS, player.jumps);
+    try std.testing.expectEqual(constants.JUMPS, player.jumps);
     try std.testing.expect(player.position.x != 0 and player.position.y != 0);
-    try std.testing.expectEqual(player.position, setup.PLAYER_START_POSITION);
+    try std.testing.expectEqual(player.position, constants.PLAYER_START_POSITION);
 }
 
 test "player can jump" {
