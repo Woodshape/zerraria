@@ -59,11 +59,11 @@ pub fn main() !void {
             p.position.y += velocity_y * rl.getFrameTime();
         }
 
-        if (p.position.y > constants.FLOOR - (constants.TILE_SIZE * 2)) {
+        if (p.position.y + constants.ANIMATION_PLAYER_HEIGHT > constants.WINDOW_HEIGHT) {
             jump_number = 0;
             isGrounded = true;
             velocity_y = 0.0;
-            p.position.y = constants.FLOOR - (constants.TILE_SIZE * 2);
+            p.position.y = constants.WINDOW_HEIGHT - constants.ANIMATION_PLAYER_HEIGHT;
         }
 
         idle_animation.animation_update();
@@ -74,11 +74,11 @@ pub fn main() !void {
         rl.drawTexturePro(player_idle_texture, player_rect, .{
             .x = p.position.x,
             .y = p.position.y,
-            .width = 100,
-            .height = 100,
+            .width = constants.ANIMATION_PLAYER_WIDTH,
+            .height = constants.ANIMATION_PLAYER_HEIGHT,
         }, .{
-            .x = 10,
-            .y = 10,
+            .x = 0,
+            .y = 0,
         }, 0.0, .white);
     }
 }

@@ -17,7 +17,7 @@ pub const Animation = struct {
 
     animation_type: AnimationType,
 
-    const tile_size = constants.TILE_SIZE;
+    const tile_size = constants.ANIMATION_TILE_SIZE;
 
     pub fn animation_update(self: *Animation) void {
         const dt: f32 = rl.getFrameTime();
