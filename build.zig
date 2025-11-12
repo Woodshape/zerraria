@@ -38,6 +38,14 @@ pub fn build(b: *std.Build) void {
     player.linkLibrary(raylib_artifact);
     player.addImport("raylib", raylib);
 
+    const animation = b.createModule(.{
+        .root_source_file = b.path("src/animation.zig"),
+        .target = target,
+        // .imports = &.{.{ .name = "raylib", .module = raylib_artifact }},
+    });
+    animation.linkLibrary(raylib_artifact);
+    animation.addImport("raylib", raylib);
+
     // Here we define an executable. An executable needs to have a root module
     // which needs to expose a `main` function. While we could add a main function
     // to the module defined above, it's sometimes preferable to split business
@@ -111,6 +119,11 @@ pub fn build(b: *std.Build) void {
     });
     const run_player_tests = b.addRunArtifact(player_tests);
 
+    const animation_tests = b.addTest(.{
+        .root_module = animation,
+    });
+    const run_animation_tests = b.addRunArtifact(animation_tests);
+
     // Creates an executable that will run `test` blocks from the executable's
     // root module. Note that test executables only test one module at a time,
     // hence why we have to create two separate ones.
@@ -127,6 +140,7 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run tests");
     test_step.dependOn(&run_exe_tests.step);
     test_step.dependOn(&run_player_tests.step);
+    test_step.dependOn(&run_animation_tests.step);
 
     // Just like flags, top level steps are also listed in the `--help` menu.
     //
