@@ -19,12 +19,9 @@ pub fn main() !void {
 
     var p: player.Player = player.Player.default();
     var idle_animation: animation.Animation = .{
-        .first_frame = 0,
         .last_frame = 3,
-        .current_frame = 0,
         .duration = 0.1,
         .duration_left = 0.1,
-        .animation_type = .Repeating,
     };
 
     var velocity_y: f32 = 0.0;
@@ -66,7 +63,7 @@ pub fn main() !void {
             p.position.y = constants.WINDOW_HEIGHT - constants.ANIMATION_PLAYER_HEIGHT;
         }
 
-        idle_animation.animation_update();
+        idle_animation.animation_update(rl.getFrameTime);
 
         var player_rect = idle_animation.animation_frame(4);
         player_rect.width *= @floatFromInt(@intFromEnum(player_direction));
