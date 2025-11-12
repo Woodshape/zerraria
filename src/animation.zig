@@ -19,6 +19,14 @@ pub const Animation = struct {
 
     const tile_size = constants.ANIMATION_TILE_SIZE;
 
+    pub fn init(last_frame: i32, duration: f32) Animation {
+        return .{
+            .last_frame = last_frame,
+            .duration = duration,
+            .duration_left = duration,
+        };
+    }
+
     pub fn animation_update(self: *Animation, getFrameTimeFn: fn () f32) void {
         const dt: f32 = getFrameTimeFn();
         self.duration_left -= dt;
@@ -64,6 +72,13 @@ pub const Animation = struct {
     }
 };
 
+test "init" {
+    const a = Animation.init(3, 1);
+
+    try std.testing.expectEqual(3, a.last_frame);
+    try std.testing.expectEqual(1, a.duration);
+}
+
 test "defaults" {
     const a: Animation = .{
         .last_frame = 3,
@@ -76,7 +91,7 @@ test "defaults" {
     try std.testing.expectEqual(0, a.first_frame);
 }
 
-test "update" {
+test "update full cycle" {
     var a: Animation = .{
         .last_frame = 3,
         .duration = 3,
