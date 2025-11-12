@@ -83,10 +83,25 @@ test "update" {
         .duration_left = 3,
     };
 
+    try std.testing.expectEqual(1, a.step);
+
     a.animation_update(mock_frame_time);
 
     // duration_left should reduce by frame_time
     try std.testing.expectEqual(2, a.duration_left);
+    try std.testing.expectEqual(0, a.current_frame);
+
+    a.animation_update(mock_frame_time);
+
+    try std.testing.expectEqual(1, a.duration_left);
+    try std.testing.expectEqual(0, a.current_frame);
+
+    a.animation_update(mock_frame_time);
+
+    // duration_left should be reset to last_frame
+    // current_frame should increase by step (1)
+    try std.testing.expectEqual(3, a.duration_left);
+    try std.testing.expectEqual(1, a.current_frame);
 }
 
 fn mock_frame_time() f32 {
