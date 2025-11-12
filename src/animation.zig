@@ -7,20 +7,20 @@ pub const AnimationType = enum { Repeating, OneShot };
 pub const AnimationDirection = enum(i2) { Left = -1, Right = 1 };
 
 pub const Animation = struct {
-    first_frame: i32,
+    first_frame: i32 = 0,
     last_frame: i32,
-    current_frame: i32,
+    current_frame: i32 = 0,
     step: i32 = 1,
 
     duration: f32,
     duration_left: f32,
 
-    animation_type: AnimationType,
+    animation_type: AnimationType = .Repeating,
 
     const tile_size = constants.ANIMATION_TILE_SIZE;
 
-    pub fn animation_update(self: *Animation) void {
-        const dt: f32 = rl.getFrameTime();
+    pub fn animation_update(self: *Animation, getFrameTimeFn: fn () f32) void {
+        const dt: f32 = getFrameTimeFn();
         self.duration_left -= dt;
 
         if (self.duration_left <= 0) {
@@ -63,3 +63,32 @@ pub const Animation = struct {
         };
     }
 };
+
+test "defaults" {
+    const a: Animation = .{
+        .last_frame = 3,
+        .duration = 3,
+        .duration_left = 3,
+    };
+
+    try std.testing.expectEqual(AnimationType.Repeating, a.animation_type);
+    try std.testing.expectEqual(1, a.step);
+    try std.testing.expectEqual(0, a.first_frame);
+}
+
+test "update" {
+    var a: Animation = .{
+        .last_frame = 3,
+        .duration = 3,
+        .duration_left = 3,
+    };
+
+    a.animation_update(mock_frame_time);
+
+    // duration_left should reduce by frame_time
+    try std.testing.expectEqual(2, a.duration_left);
+}
+
+fn mock_frame_time() f32 {
+    return 1.0;
+}
