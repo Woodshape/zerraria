@@ -30,7 +30,6 @@ pub fn main() !void {
     var jump_number: u8 = 0;
     var isGrounded: bool = false;
     var player_direction: animation.AnimationDirection = .Right;
-    var player_texture: rl.Texture2D = undefined;
 
     while (!rl.windowShouldClose()) {
         rl.beginDrawing();
@@ -69,11 +68,12 @@ pub fn main() !void {
             p.position.y = constants.WINDOW_HEIGHT - constants.ANIMATION_PLAYER_HEIGHT;
         }
 
-        player_texture = if (isMoving) player_run_texture else player_idle_texture;
+        const player_texture: rl.Texture2D = if (isMoving) player_run_texture else player_idle_texture;
+        const animation_frames: i32 = if (!isMoving) 4 else 6;
 
         player_animation.animation_update(rl.getFrameTime);
 
-        var player_rect = player_animation.animation_frame(4);
+        var player_rect = player_animation.animation_frame(animation_frames);
         player_rect.width *= @floatFromInt(@intFromEnum(player_direction));
 
         rl.drawTexturePro(player_texture, player_rect, .{
