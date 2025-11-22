@@ -87,7 +87,3 @@ pub fn main() !void {
         }, 0.0, .white);
     }
 }
-
-test "test" {
-    try std.testing.expect(true);
-}

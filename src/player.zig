@@ -27,6 +27,17 @@ test "player defaults" {
     try std.testing.expectEqual(player.position, constants.PLAYER_START_POSITION);
 }
 
+test "player init" {
+    const jumps: usize = 2;
+    const pos: rl.Vector2 = rl.Vector2{
+        .x = 100,
+        .y = 100,
+    };
+    const player: Player = Player.init(pos, jumps);
+    try std.testing.expectEqual(jumps, player.jumps);
+    try std.testing.expectEqual(player.position, pos);
+}
+
 test "player can jump" {
     const jumps: usize = 2;
     var player: Player = .{
