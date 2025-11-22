@@ -10,6 +10,8 @@ const print = std.debug.print;
 pub const GRAVITY: f32 = 600.0;
 pub const JUMP_FORCE: f32 = -300.0;
 
+const FLOOR: u32 = constants.WINDOW_HEIGHT - constants.ANIMATION_PLAYER_HEIGHT;
+
 pub fn main() !void {
     rl.initWindow(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT, "raylib zig example");
     defer rl.closeWindow();
@@ -61,11 +63,12 @@ pub fn main() !void {
             p.position.y += velocity_y * rl.getFrameTime();
         }
 
-        if (p.position.y + constants.ANIMATION_PLAYER_HEIGHT > constants.WINDOW_HEIGHT) {
+        const player_feet_pos: f32 = p.position.y + constants.ANIMATION_PLAYER_HEIGHT;
+        if (player_feet_pos > constants.WINDOW_HEIGHT) {
             jump_number = 0;
             isGrounded = true;
             velocity_y = 0.0;
-            p.position.y = constants.WINDOW_HEIGHT - constants.ANIMATION_PLAYER_HEIGHT;
+            p.position.y = FLOOR;
         }
 
         const player_texture: rl.Texture2D = if (isMoving) player_run_texture else player_idle_texture;

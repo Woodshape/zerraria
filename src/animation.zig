@@ -103,6 +103,7 @@ test "update full cycle" {
     a.animation_update(mock_frame_time);
 
     // duration_left should reduce by frame_time
+    // current_frame should stay at whatever value it was
     try std.testing.expectEqual(2, a.duration_left);
     try std.testing.expectEqual(0, a.current_frame);
 
