@@ -23,7 +23,7 @@ pub fn main() !void {
 
     var p: player.Player = player.Player.default();
     var player_animation: animation.Animation = .{
-        .last_frame = 3,
+        .last_frame = 5,
         .duration = 0.1,
         .duration_left = 0.1,
     };
@@ -75,6 +75,9 @@ pub fn main() !void {
         const animation_frames: i32 = if (!isMoving) 4 else 6;
 
         player_animation.animation_update(rl.getFrameTime);
+
+        const a: f32 = constants.toF32(animation_frames);
+        _ = a;
 
         var player_rect = player_animation.animation_frame(animation_frames);
         player_rect.width *= @floatFromInt(@intFromEnum(player_direction));
