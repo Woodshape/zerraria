@@ -12,8 +12,22 @@ pub const JUMP_FORCE: f32 = -300.0;
 
 const FLOOR: u32 = constants.WINDOW_HEIGHT - constants.ANIMATION_PLAYER_HEIGHT;
 
+const Input = struct {
+    left_pressed: bool,
+    right_pressed: bool,
+    jump_pressed: bool,
+};
+
+fn handle_input() Input {
+    return Input{
+        .left_pressed = rl.isKeyDown(.a) or rl.isKeyDown(.left),
+        .right_pressed = rl.isKeyDown(.d) or rl.isKeyDown(.right),
+        .jump_pressed = rl.isKeyPressed(.space),
+    };
+}
+
 pub fn main() !void {
-    rl.initWindow(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT, "raylib zig example");
+    rl.initWindow(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT, "Game");
     defer rl.closeWindow();
 
     const player_idle_texture: rl.Texture2D = try rl.loadTexture("assets/Dude_Monster_Idle_4.png");
@@ -42,17 +56,19 @@ pub fn main() !void {
         const speed: f32 = 2 * 100 * rl.getFrameTime();
         var isMoving: bool = false;
 
-        if (rl.isKeyDown(.d) or rl.isKeyDown(.right)) {
+        const input: Input = handle_input();
+
+        if (input.right_pressed) {
             p.position.x += speed;
             player_direction = .Right;
             isMoving = true;
         }
-        if (rl.isKeyDown(.a) or rl.isKeyDown(.left)) {
+        if (input.left_pressed) {
             p.position.x -= speed;
             player_direction = .Left;
             isMoving = true;
         }
-        if (rl.isKeyPressed(.space) and p.canJump(jump_number)) {
+        if (input.jump_pressed and p.canJump(jump_number)) {
             jump_number += 1;
             velocity_y = JUMP_FORCE;
             isGrounded = false;
